@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Jumpscare Foxy!</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            background-color: black;
+            overflow: hidden;
+        }
+        #pizzeria {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('pizzeria-background.jpg'); /* Εδώ το φόντο της πίτσας */
+            background-size: cover;
+            z-index: 1;
+            opacity: 0;
+            transition: opacity 1s;
+        }
+        #foxy-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Το φόντο της πίτσας -->
+    <div id="pizzeria"></div>
+
+    <!-- Το container για το 3D Foxy -->
+    <div id="foxy-container"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        let scene, camera, renderer, foxy;
+
+        // Δημιουργία σκηνής, κάμερας και renderer
+        function init() {
+            scene = new THREE.Scene();
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            renderer = new THREE.WebGLRenderer();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            document.getElementById('foxy-container').appendChild(renderer.domElement);
+        }
+
+        // Φόρτωση του 3D μοντέλου του Foxy (πρέπει να έχεις ένα μοντέλο σε μορφή glTF ή GLB)
+        function loadModel() {
+            const loader = new THREE.GLTFLoader();
+            loader.load('foxy-model.glb', function (gltf) {
+                foxy = gltf.scene;
+                scene.add(foxy);
+                foxy.scale.set(0.5, 0.5, 0.5); // Ρύθμισε το μέγεθος του Foxy
+                foxy.position.set(0, -1, -5); // Τοποθέτηση του Foxy στην σκηνή
+                animate();
+            });
+        }
+
+        // Κίνηση του Foxy
+        function animate() {
+            requestAnimationFrame(animate);
+            foxy.rotation.y += 0.01; // Περιστροφή του Foxy για να φαίνεται πιο δραστήριο
+            renderer.render(scene, camera);
+        }
+
+        // Ενεργοποίηση του jumpscare με το Foxy
+        function activatePizzeria() {
+            const pizzeria = document.getElementById('pizzeria');
+            pizzeria.style.opacity = '1';  // Εμφάνιση του φόντου
+
+            setTimeout(() => {
+                document.getElementById('foxy-container').style.display = 'block'; // Εμφάνιση του Foxy
+               
