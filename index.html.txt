@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Black Screen Effect</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+        }
+        .black-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: black;
+            z-index: 9999;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Κάνε κλικ στο παρακάτω κουμπί!</h1>
+    <button onclick="activateBlackScreen()">Κάνε Κλικ</button>
+    <div class="black-screen" id="blackScreen"></div>
+
+    <script>
+        function activateBlackScreen() {
+            const screen = document.getElementById('blackScreen');
+            screen.style.display = 'block';
+            setTimeout(() => {
+                screen.style.display = 'none';
+            }, 15000); // 15 δευτερόλεπτα
+        }
+    </script>
+</body>
+</html>
